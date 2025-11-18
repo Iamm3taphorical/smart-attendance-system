@@ -1,14 +1,21 @@
 import os
+
 import pickle
+
 import logging
+
 import numpy as np
+
 from typing import List, Tuple, Optional, Dict
+
 import cv2
+
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
 class FaceRecognitionService:
+
     def __init__(self, config: dict):
         self.config = config
         self.known_face_encodings = []
@@ -85,6 +92,7 @@ class FaceRecognitionService:
             return []
     
     def encode_face(self, image: np.ndarray, face_location: Tuple) -> np.ndarray:
+        
         """Encode a face into a feature vector"""
         if self.model_backend == "face_recognition":
             encoding = self.face_recognition_lib.face_encodings(
@@ -98,7 +106,9 @@ class FaceRecognitionService:
             return None
     
     def recognize_face(self, encoding: np.ndarray) -> Tuple[Optional[str], float]:
+
         """Recognize a face from known encodings"""
+
         if not self.known_face_encodings:
             return None, 0.0
         
