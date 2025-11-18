@@ -1,4 +1,3 @@
-# app/services/face_recognition.py
 import os
 import pickle
 import logging
