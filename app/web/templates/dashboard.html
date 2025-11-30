@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="mb-4">
+    <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 0.5rem;">Dashboard</h1>
+    <p style="color: var(--text-secondary);">Overview of today's attendance</p>
+</div>
+
+<!-- Stats Grid -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-title">Total Present</div>
+        <div class="stat-value text-success">{{ stats.present }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-title">Late Arrivals</div>
+        <div class="stat-value text-warning">{{ stats.late }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-title">Unknown Faces</div>
+        <div class="stat-value text-danger">{{ stats.unknown }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-title">Total Students</div>
+        <div class="stat-value">{{ stats.total_students }}</div>
+    </div>
+</div>
+
+<!-- Recent Attendance -->
+<div class="table-container">
+    <div class="table-header">
+        <h2 style="font-size: 1.25rem; font-weight: 600;">Recent Activity</h2>
+        <a href="#" class="btn btn-primary" style="font-size: 0.875rem; padding: 0.5rem 1rem;">View All</a>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Student</th>
+                <th>ID</th>
+                <th>Status</th>
+                <th>Confidence</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in recent_attendance %}
+            <tr>
+                <td>{{ record.timestamp }}</td>
+                <td>
+                    <div style="font-weight: 500;">{{ record.name or 'Unknown' }}</div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary);">{{ record.email }}</div>
+                </td>
+                <td>{{ record.student_id }}</td>
+                <td>
+                    <span class="status-badge status-{{ record.status }}">
+                        {{ record.status|upper }}
+                    </span>
+                </td>
+                <td>{{ "%.1f"|format(record.confidence * 100) }}%</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" style="text-align: center; color: var(--text-secondary);">No attendance records found for today.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

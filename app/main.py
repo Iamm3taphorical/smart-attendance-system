@@ -35,7 +35,8 @@ class SmartAttendanceSystem:
         self.is_running = False
         self.capture_thread = None
         self.web_thread = None
-        self.flask_app = create_app({'DATABASE_PATH': self.config['database']['path']})
+        # Pass the full config to Flask app so FaceRecognitionService can access it
+        self.flask_app = create_app(self.config)
 
     def _load_config(self, config_path: str) -> dict:
         with open(config_path, 'r', encoding='utf-8') as f:
@@ -105,6 +106,9 @@ class SmartAttendanceSystem:
 
     def _process_frame(self, frame: np.ndarray):
         try:
+            # Check for updates to known faces (hot-reload)
+            self.face_service._load_known_faces()
+            
             face_locations = self.face_service.detect_faces(frame)
 
             for face_location in face_locations:

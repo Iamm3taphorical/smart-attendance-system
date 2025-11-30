@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Smart Attendance{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="brand">
+                <i data-lucide="scan-face"></i>
+                <span>SmartAuth</span>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li>
+                        <a href="{{ url_for('dashboard') }}" class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}">
+                            <i data-lucide="layout-dashboard"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('register_student') }}" class="nav-link {% if request.endpoint == 'register_student' %}active{% endif %}">
+                            <i data-lucide="user-plus"></i>
+                            Register Student
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('attendance_records') }}" class="nav-link {% if request.endpoint == 'attendance_records' %}active{% endif %}">
+                            <i data-lucide="clipboard-list"></i>
+                            Attendance
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('analytics') }}" class="nav-link {% if request.endpoint == 'analytics' %}active{% endif %}">
+                            <i data-lucide="bar-chart-3"></i>
+                            Analytics
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('export_csv', all=1) }}" class="nav-link">
+                            <i data-lucide="file-text"></i>
+                            Reports
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('settings') }}" class="nav-link {% if request.endpoint == 'settings' %}active{% endif %}">
+                            <i data-lucide="settings"></i>
+                            Settings
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}" style="margin-bottom: 1rem; padding: 1rem; border-radius: 0.5rem; background: rgba(59, 130, 246, 0.1); color: var(--accent);">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

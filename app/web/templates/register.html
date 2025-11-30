@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="mb-4">
+    <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 0.5rem;">Register Student</h1>
+    <p style="color: var(--text-secondary);">Add a new student to the recognition system</p>
+</div>
+
+<div class="form-card">
+    <form action="{{ url_for('register_student') }}" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required placeholder="e.g. John Doe">
+        </div>
+
+        <div class="form-group">
+            <label for="student_id">Student ID</label>
+            <input type="text" id="student_id" name="student_id" required placeholder="e.g. S2023001">
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required placeholder="john@example.com">
+        </div>
+
+        <div class="form-group">
+            <label for="photo">Student Photo</label>
+            <div style="border: 2px dashed var(--border); padding: 2rem; text-align: center; border-radius: 0.5rem; cursor: pointer;" onclick="document.getElementById('photo').click()">
+                <i data-lucide="upload-cloud" style="width: 48px; height: 48px; color: var(--text-secondary); margin-bottom: 1rem;"></i>
+                <p style="color: var(--text-secondary);">Click to upload a clear face photo</p>
+                <input type="file" id="photo" name="photo" accept="image/*" required style="display: none;" onchange="document.getElementById('file-name').textContent = this.files[0].name">
+                <p id="file-name" style="margin-top: 0.5rem; color: var(--accent); font-size: 0.875rem;"></p>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%;">
+            <i data-lucide="save"></i>
+            Register Student
+        </button>
+    </form>
+</div>
+{% endblock %}

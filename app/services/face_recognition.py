@@ -15,6 +15,7 @@ class FaceRecognitionService:
         self.known_face_encodings = []
         self.known_face_metadata = []
         self.model_backend = config['face_recognition']['model_backend']
+        self.last_loaded_time = 0
         self._load_model_backend()
         self._load_known_faces()
 
@@ -44,11 +45,14 @@ class FaceRecognitionService:
         encodings_file = known_faces_path / "encodings.pkl"
         if encodings_file.exists():
             try:
-                with open(encodings_file, 'rb') as f:
-                    data = pickle.load(f)
-                    self.known_face_encodings = data['encodings']
-                    self.known_face_metadata = data['metadata']
-                logger.info(f"Loaded {len(self.known_face_encodings)} known faces")
+                mtime = encodings_file.stat().st_mtime
+                if mtime > self.last_loaded_time:
+                    with open(encodings_file, 'rb') as f:
+                        data = pickle.load(f)
+                        self.known_face_encodings = data['encodings']
+                        self.known_face_metadata = data['metadata']
+                    self.last_loaded_time = mtime
+                    logger.info(f"Loaded {len(self.known_face_encodings)} known faces")
             except Exception as e:
                 logger.error(f"Error loading known faces: {e}")
 
