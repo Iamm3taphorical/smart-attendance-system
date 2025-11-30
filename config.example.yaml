@@ -1,0 +1,44 @@
+system:
+  name: "Smart Attendance System"
+  version: "1.0.0"
+  debug: false
+
+database:
+  path: "data/attendance.db"
+  backup_interval: 3600
+  encrypted_backup: true
+
+face_recognition:
+  model_backend: "face_recognition"
+  detection_model: "hog"
+  tolerance: 0.6
+  num_jitters: 1
+  known_faces_path: "data/known_faces/"
+
+attendance:
+  duplicate_threshold: 300
+  proxy_detection: true
+  location_verification: true
+  real_time_alerts: true
+
+camera:
+  source: 0
+  width: 640
+  height: 480
+  fps: 30
+  rotation: 0
+
+security:
+  encryption_key: "your-secure-key-here"
+  token_expiry: 3600
+  allowed_ips: ["127.0.0.1", "192.168.1.0/24"]
+
+web_dashboard:
+  host: "0.0.0.0"
+  port: 5000
+  debug: false
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 4
